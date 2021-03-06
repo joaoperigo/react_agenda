@@ -2,76 +2,68 @@ import React, { useState } from 'react';
 import { View, TextInput, Button, StyleSheet, Text, ScrollView, FlatList } from 'react-native';
 
 export default function App() {
-  const [lembrete, setLembrete] = useState('');
-  const [lembretes, setLembretes] = useState([]);
+  const [nome, setNome] = useState('');
+  const [numero, setNumero] = useState('');
+  const [contatos, setContatos] = useState([]);
   const [contador, setContador] = useState(0);
-  const capturarLembrete = (lembrete) => {
-    setLembrete(lembrete);
+
+  const capturarNome = (nome) => {
+    setNome(nome);
   }
-  const adicionarLembrete = () => {
-    setLembretes(lembretes => {
+
+  const capturarNumero = (numero) => {
+    setNumero(numero);
+  }
+
+  const adicionarContato = () => { 
+    setContatos(contatos => {
       setContador (contador + 1);
-      return [{key: contador.toString(), value: lembrete}, ...lembretes];
+      return [{key: contador.toString(), nome: nome, numero: numero}, ...contatos];
     })
-    //lembretes = [a, b, c]
-    //...lembretes = a, b, c operador spread
-    //console.log(lembrete);
+
   }
   return (
     <View style={styles.container}>
-     <View style={styles.lembreteInputView}>
+     <View style={styles.inputView}>
       {/*Usuário irá inserir lembretes aqui */}
+
         <TextInput 
-          placeholder="Digite o lembrete..."
-          style={styles.lembreteTextInput}
-          onChangeText={capturarLembrete}
+          placeholder="Digite o nome..."
+          style={styles.textInput}
+          onChangeText={capturarNome}
         />
+
+        <TextInput 
+          placeholder="Digite o numero..."
+          style={styles.textInput}
+          onChangeText={capturarNumero}
+        />
+
         <View
-          style={styles.lembreteInputButton}
+          style={styles.inputButton}
         >
         <Button          
           title="+"
-          onPress={adicionarLembrete}
+          onPress={adicionarContato}
         />
         </View>
+
      </View>
      <View>
     <View
       style={{width: '80%', alignSelf: 'center'}}
     >
       <FlatList 
-        data={lembretes}
-        renderItem = {lembrete => (
+        data={contatos}
+        renderItem = {contato => (
           <View style={styles.itemNaLista}>
-            <Text>{lembrete.item.value}</Text>
+            <Text>{contato.item.nome}</Text>
+            <Text>{contato.item.numero}</Text>
           </View>
         )}
       />
     </View>
 
-     {
-
-      /*
-      <ScrollView>
-      <View style={{alignItems: 'center'}}>
-        {
-          /*Aqui será exibida a lista de lembretes
-          lembretes.map((lembrete) => (
-            <View
-              key={lembrete}
-              style={styles.itemNaLista}
-            >
-              <Text>
-                {lembrete}
-              </Text>
-            </View>
-          ))
-        }
-      </View>
-     </ScrollView>
-      */
-
-     }
      
      </View>
     </View>
@@ -82,11 +74,11 @@ const styles = StyleSheet.create({
   container: { 
     padding: 40 
   },
-  lembreteInputView: { 
+  inputView: { 
     alignItems: 'center',
     marginBottom: 12 
   },
-  lembreteTextInput: {
+  textInput: {
     width: '80%',
     borderBottomColor: '#CCC',
     borderBottomWidth: 1,
@@ -94,7 +86,7 @@ const styles = StyleSheet.create({
     padding: 4,
     textAlign: 'center'
   },
-  lembreteInputButton: { 
+  inputButton: { 
     width: '80%' 
   },
   itemNaLista: {
